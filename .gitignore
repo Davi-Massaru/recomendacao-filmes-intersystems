@@ -1,0 +1,10 @@
+.DS_Store
+.vscode/
+*.config/
+.env
+.csv
+.DS_Store
+__pycache__
+iris-main.log
+.venv
+waitISC.log
