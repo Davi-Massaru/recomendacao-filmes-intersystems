@@ -1,0 +1,10 @@
+zn "%SYS"
+
+do ##class(%SYSTEM.OBJ).LoadDir("/opt/irisbuild/src","ck",,1)
+do ##class(Security.Users).UnExpireUserPasswords("*")
+
+do ##class(dc.util).PopularFilmes()
+
+zpm "load /opt/irisbuild/ -v":1:1
+
+halt 

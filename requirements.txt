@@ -1,0 +1,11 @@
+requests>=2.25.0
+flask>=2.0.0,<3.0.0
+flask-sqlalchemy>=2.5.0
+intersystems_iris @ https://github.com/intersystems-community/intersystems-irispython/releases/download/3.7.7/intersystems_iris-3.7.7-py3-none-any.whl
+sqlalchemy_iris>=0.1.0
+iris-pex-embedded-python>=2.0.0
+pytest>=6.0.0
+pandas>=1.2.0
+plotly>=4.14.0
+unidecode
+sentence-transformers

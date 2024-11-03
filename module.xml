@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Export generator="Cache" version="25">
+  <Document name="recomendacao-filmes-intersystems.ZPM">
+    <Module>
+      <Name>recomendacao-filmes-intersystems</Name>
+      <Version>1.1.2</Version>
+      <Packaging>module</Packaging>
+      <SourcesRoot>src</SourcesRoot>
+      <Resource Name="dc.PKG"/>
+      <FileCopy Name="src/python/flaskapp/" Target="${libdir}/flaskapp/"/>
+      <SystemSetting Name="CSP.DefaultFileCharset" Value="UTF-8"/>
+
+      <WSGIApplication
+        Url="/flaskapp/"
+        UnauthenticatedEnabled="1"
+        Description="Sample WSGI application using Flask"
+        MatchRoles=":${dbrole}"
+        WSGIAppLocation="${libdir}flaskapp/"
+        WSGIAppName="App"
+        WSGICallable="App"
+       />
+      
+    </Module>
+  </Document>
+</Export>
