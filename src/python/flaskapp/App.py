@@ -26,7 +26,7 @@ def consulta(id):
             """
         similares = []
         stmt = iris.sql.prepare(query)
-        rs = stmt.execute(id, filme.genres, str(encode_search_vector))
+        rs = stmt.execute(id, str(encode_search_vector))
         for idx, row in enumerate(rs):
             recomendacao = iris.cls("dc.filmes")._OpenId(row[0])
             similares.append({
