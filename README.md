@@ -8,7 +8,7 @@ Serão demonstrados os passos necessários para o armazenamento e a consulta de 
 
 Ao final, será desenvolvida uma aplicação Flask que utilizará o recurso Vector Search, implementada com embedded python e executada diretamente em um servidor IRIS.
 
-## Por que o VECTOR SEARCH ? 
+## Por que o Vector Search ? 
 
 Com o Vector Search no InterSystems IRIS permite armazenar e comparar os vetores, utilizando vetores para identificar itens semanticamente semelhantes, o que amplia as capacidades de recomendação e recuperação de informações em diversos contextos. 
 
@@ -248,6 +248,70 @@ for idx, row in enumerate(rs):
 ```
 
 ## Codificando com flask e embedded python
+
+Por fim, a disponibilização do recurso para o usuário final de maneira rápida e prática é facilitada pelo uso do Embedded Python do InterSystems IRIS. Utilizando o Flask, podemos criar um serviço em um único arquivo Python:
+
+````python
+from flask import Flask, jsonify, request
+from sentence_transformers import SentenceTransformer
+
+import iris
+
+app = Flask(__name__)
+
+@app.route('/recomendar/<id>', methods=['GET'])
+def consulta(id):
+    try:
+
+        filme = iris.cls("dc.filmes")._OpenId(id)
+        model = SentenceTransformer('all-MiniLM-L6-v2') 
+        overview_preprocess = iris.cls("dc.util").Preprocess(filme.overview)
+        encode_search_vector = model.encode(overview_preprocess, normalize_embeddings=True).tolist()
+        
+        query = """
+            SELECT TOP 5 ID
+            FROM dc.filmes 
+            WHERE ID <> ?
+            ORDER BY VECTOR_DOT_PRODUCT(overviewVector, TO_VECTOR(?)) DESC 
+            """
+        similares = []
+        stmt = iris.sql.prepare(query)
+        rs = stmt.execute(id, str(encode_search_vector))
+        for idx, row in enumerate(rs):
+            recomendacao = iris.cls("dc.filmes")._OpenId(row[0])
+            similares.append({
+                "title" : recomendacao.title,
+                "originalTitle" : recomendacao.originalTitle,
+                "genres" : recomendacao.genres,
+                "overview" : recomendacao.overview,
+                "keywords" : str(recomendacao.keywords),
+                "director" : recomendacao.director,
+                "popularity" : recomendacao.popularity,
+                "productionCompanies" : recomendacao.productionCompanies,
+                "releaseDate" : recomendacao.releaseDate
+            })
+
+        return jsonify({ 
+            "Filme":{
+                "title" : filme.title,
+                "originalTitle" : filme.originalTitle,
+                "genres" : filme.genres,
+                "overview" : filme.overview,
+                "keywords" : str(filme.keywords),
+                "director" : filme.director,
+                "popularity" : filme.popularity,
+                "productionCompanies" : filme.productionCompanies,
+                "releaseDate" : filme.releaseDate
+            },
+            "Similares" : similares
+        })
+        
+    except Exception as e:
+        return print(e)
+
+if __name__ == '__main__':
+    app.run(debug=True, port=52773, host='localhost')
+````
 
 
 ## video demonstrativo:
