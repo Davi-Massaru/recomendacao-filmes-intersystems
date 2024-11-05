@@ -2,6 +2,8 @@
 
 ## Estudo de Caso: Recomendação de Filmes
 
+[Assista ao vídeo explicativo ao final deste tutoria.](https://youtu.be/joLN9a8MY5c)
+
 Este artigo explora o potencial do Vector Search do InterSystems IRIS em um estudo de caso para recomendação de filmes.
 
 Serão demonstrados os passos necessários para o armazenamento e a consulta de registros no banco de dados InterSystems IRIS. Abordando a criação da tabela, armazenamento dos registros e a construção de uma aplicação de consulta, onde terá a disponibilização por meio do mais novo recurso WSGI. 
