@@ -2,7 +2,7 @@
 
 ## Estudo de Caso: Recomendação de Filmes
 
-[Assista ao vídeo explicativo ao final deste tutoria.](https://youtu.be/joLN9a8MY5c)
+[Assista ao vídeo explicativo com conteúdo deste tutorial.](https://youtu.be/joLN9a8MY5c)
 
 Este artigo explora o potencial do Vector Search do InterSystems IRIS em um estudo de caso para recomendação de filmes.
 
