@@ -314,5 +314,88 @@ if __name__ == '__main__':
 ````
 
 
-## video demonstrativo:
+# Resultado Final:
+
+Por fim, após disponibilizar o recurso, prepare uma pipoca e utilize a rota:
+
+``` http://localhost:52773/flaskapp/recomendar/<ID FILME> ``` 
+
+Ao realizar a consulta, você receberá uma resposta em JSON semelhante a esta:
+
+```JSON
+{
+  "Filme": {
+    "director": "Justin Lin",
+    "genres": "Action Adventure Science Fiction",
+    "keywords": "sequel stranded hatred space opera",
+    "originalTitle": "Star Trek Beyond",
+    "overview": "The USS Enterprise crew explores the furthest reaches of uncharted space, where they encounter a mysterious new enemy who puts them and everything the Federation stands for to the test.",
+    "popularity": 65.352913,
+    "productionCompanies": "[{\"name\": \"Paramount Pictures\", \"id\": 4}, {\"name\": \"Bad Robot\", \"id\": 11461}, {\"name\": \"Perfect Storm Entertainment\", \"id\": 34530}, {\"name\": \"Alibaba Pictures Group\", \"id\": 69484}, {\"name\": \"Skydance Media\", \"id\": 82819}, {\"name\": \"Sneaky Shark\", \"id\": 83644}, {\"name\": \"Huahua Media\", \"id\": 83645}]",
+    "releaseDate": "2016-07-07",
+    "title": "Star Trek Beyond"
+  },
+  "Similares": [
+    {
+      "director": "Robert Wise",
+      "genres": "Science Fiction Adventure Mystery",
+      "keywords": "artificial intelligence uss enterprise starfleet san francisco self sacrifice",
+      "originalTitle": "Star Trek: The Motion Picture",
+      "overview": "When a destructive space entity is spotted approaching Earth, Admiral Kirk resumes command of the Starship Enterprise in order to intercept, examine, and hopefully stop it.",
+      "popularity": 24.616634,
+      "productionCompanies": "[{\"name\": \"Paramount Pictures\", \"id\": 4}]",
+      "releaseDate": "1979-12-06",
+      "title": "Star Trek: The Motion Picture"
+    },
+    {
+      "director": "Leonard Nimoy",
+      "genres": "Science Fiction Adventure",
+      "keywords": "saving the world san francisco uss enterprise-a time travel whale",
+      "originalTitle": "Star Trek IV: The Voyage Home",
+      "overview": "Fugitives of the Federation for their daring rescue of Spock from the doomed Genesis Planet, Admiral Kirk (William Shatner) and his crew begin their journey home to face justice for their actions. But as they near Earth, they find it at the mercy of a mysterious alien presence whose signals are slowly destroying the planet. In a desperate attempt to answer the call of the probe, Kirk and his crew race back to the late twentieth century. However they soon find the world they once knew to be more alien than anything they've encountered in the far reaches of the galaxy!",
+      "popularity": 22.258428,
+      "productionCompanies": "[{\"name\": \"Paramount Pictures\", \"id\": 4}]",
+      "releaseDate": "1986-11-25",
+      "title": "Star Trek IV: The Voyage Home"
+    },
+    {
+      "director": "Gary Nelson",
+      "genres": "Adventure Family Science Fiction Action",
+      "keywords": "killer robot space marine ghost ship black hole",
+      "originalTitle": "The Black Hole",
+      "overview": "The explorer craft U.S.S. Palomino is returning to Earth after a fruitless 18-month search for extra-terrestrial life when the crew comes upon a supposedly lost ship, the magnificent U.S.S. Cygnus, hovering near a black hole. The ship is controlled by Dr. Hans Reinhardt and his monstrous robot companion, Maximillian. But the initial wonderment and awe the Palomino crew feel for the ship and its resistance to the power of the black hole turn to horror as they uncover Reinhardt's plans.",
+      "popularity": 8.265317,
+      "productionCompanies": "[{\"name\": \"Walt Disney Productions\", \"id\": 3166}]",
+      "releaseDate": "1979-12-18",
+      "title": "The Black Hole"
+    },
+    {
+      "director": "J.J. Abrams",
+      "genres": "Action Adventure Science Fiction",
+      "keywords": "spacecraft friendship sequel futuristic space",
+      "originalTitle": "Star Trek Into Darkness",
+      "overview": "When the crew of the Enterprise is called back home, they find an unstoppable force of terror from within their own organization has detonated the fleet and everything it stands for, leaving our world in a state of crisis.  With a personal score to settle, Captain Kirk leads a manhunt to a war-zone world to capture a one man weapon of mass destruction. As our heroes are propelled into an epic chess game of life and death, love will be challenged, friendships will be torn apart, and sacrifices must be made for the only family Kirk has left: his crew.",
+      "popularity": 78.291018,
+      "productionCompanies": "[{\"name\": \"Paramount Pictures\", \"id\": 4}, {\"name\": \"Skydance Productions\", \"id\": 6277}, {\"name\": \"Bad Robot\", \"id\": 11461}, {\"name\": \"Kurtzman/Orci\", \"id\": 12536}]",
+      "releaseDate": "2013-05-05",
+      "title": "Star Trek Into Darkness"
+    },
+    {
+      "director": "Paul W.S. Anderson",
+      "genres": "Horror Science Fiction Mystery",
+      "keywords": "space marine nudity nightmare hallucination cryogenics",
+      "originalTitle": "Event Horizon",
+      "overview": "In the year 2047 a group of astronauts are sent to investigate and salvage the long lost starship \"Event Horizon\". The ship disappeared mysteriously 7 years before on its maiden voyage and with its return comes even more mystery as the crew of the \"Lewis and Clark\" discover the real truth behind its disappearance and something even more terrifying.",
+      "popularity": 29.787135,
+      "productionCompanies": "[{\"name\": \"Paramount Pictures\", \"id\": 4}, {\"name\": \"Impact Pictures\", \"id\": 248}, {\"name\": \"Golar Productions\", \"id\": 2484}]",
+      "releaseDate": "1997-08-15",
+      "title": "Event Horizon"
+    }
+  ]
+}
+```
+
+Essa rota permitirá que você receba recomendações personalizadas baseadas na descrição do filme que você forneceu, tornando sua experiência de escolha de filme mais fácil e divertida
+
+Aproveite!
 
