@@ -1,36 +1,38 @@
-# Using IRIS - Vector Search
+# Utilizando IRIS - Vector Search
 
-## Case Study: Movie Recommendation
+## Estudo de Caso: Recomendação de Filmes
 
-This article explores the potential of Vector Search in InterSystems IRIS through a movie recommendation case study.
+[Assista ao vídeo explicativo com conteúdo deste tutorial.](https://youtu.be/joLN9a8MY5c)
 
-It demonstrates the steps needed for storing and querying records in the InterSystems IRIS database, covering table creation, record storage, and building a query application, which will be made available using the newest WSGI feature.
+Este artigo explora o potencial do Vector Search do InterSystems IRIS em um estudo de caso para recomendação de filmes.
 
-Finally, a Flask application will be developed that utilizes the Vector Search feature, implemented with embedded Python and run directly on an IRIS server.
+Serão demonstrados os passos necessários para o armazenamento e a consulta de registros no banco de dados InterSystems IRIS. Abordando a criação da tabela, armazenamento dos registros e a construção de uma aplicação de consulta, onde terá a disponibilização por meio do mais novo recurso WSGI. 
 
-## Why Vector Search?
+Ao final, será desenvolvida uma aplicação Flask que utilizará o recurso Vector Search, implementada com embedded python e executada diretamente em um servidor IRIS.
 
-Vector Search in InterSystems IRIS enables the storage and comparison of vectors, using them to identify semantically similar items, thus enhancing recommendation and information retrieval capabilities across various contexts.
+## Por que o Vector Search ? 
 
-In InterSystems IRIS, vectors are stored in tables as a specific data type, and functions like VECTOR_COSINE and VECTOR_DOT_PRODUCT are used to compare vector similarity. This feature simplifies the creation of recommendation systems by allowing an input vector to be compared with a set of stored vectors to find the most similar ones.
+Com o Vector Search no InterSystems IRIS permite armazenar e comparar os vetores, utilizando vetores para identificar itens semanticamente semelhantes, o que amplia as capacidades de recomendação e recuperação de informações em diversos contextos. 
 
-For example, in movie recommendations, movie descriptions can be transformed into vectors using language models such as those from the SentenceTransformer library.
+No InterSystems IRIS, vetores são armazenados em tabelas como um tipo de dado específico, e funções como VECTOR_COSINE e VECTOR_DOT_PRODUCT são usadas para comparar a similaridade entre vetores. Esse recurso facilita a criação de sistemas de recomendação, permitindo que um vetor de entrada seja comparado com um conjunto de vetores armazenados para encontrar os mais semelhantes.
+
+No caso de recomendação de filmes, por exemplo, descrições de filmes podem ser transformadas em vetores utilizando modelos de linguagem, como os da biblioteca SentenceTransformer.
+
 
 ## DATA SET
 
-The dataset used for this tutorial can be found at:
+O Dataset  utilizado para este tutorial está contido em :
 https://www.kaggle.com/datasets/utkarshx27/movies-dataset
 
-## Table Creation
+## Criação da tabela.
 
-To start storing data, it is necessary to create the table where the movies will be stored.
+Para iniciar o armazenamento dos dados, é necessário criar a tabela onde os filmes serão armazenados.
 
-Since we are using the SentenceTransformer model ('all-MiniLM-L6-v2'), a specific column called `overviewVector` will be created to store the vectors.
+Como estamos utilizando o modelo SentenceTransformer('all-MiniLM-L6-v2'), será criada uma coluna específica, chamada overviewVector, para armazenar os vetores.
 
-The column will be defined with the data type `%Vector(DATATYPE = "DOUBLE", LEN = 384)`, which allows storing 384-dimensional vectors in a floating-point format.
+A coluna será definida com o tipo de dado %Vector(DATATYPE = "DOUBLE", LEN = 384), que permite armazenar vetores de 384 dimensões em formato de ponto flutuante.
 
-To achieve this, we can run the following SQL:
-
+Para isso, podemos rodar o sql:
 
 ```SQL
 CREATE TABLE dc.filmes (
@@ -47,7 +49,7 @@ CREATE TABLE dc.filmes (
 )
 ```
 
-Or create the table by coding the `.cls` class with the following file structure:
+Ou realizar a criação codificando a classe .cls criando a seguinte estrutura de arquivo:
 
 ``` ObjectScript
 Class dc.filmes Extends %Persistent
@@ -76,10 +78,9 @@ Property overviewVector As %Vector(DATATYPE = "DOUBLE", LEN = 384);
 
 ``` 
 
-## VECTORIZATION
+## VETORIZANDO
 
-In this case, for data storage, the `SentenceTransformer('all-MiniLM-L6-v2')` model will be used. This model transforms sentences (or words) into a 384-element vector that captures the semantic features of the input, allowing the similarity between different texts to be compared through operations such as distance or dot product between vectors.
-
+Neste caso, para o armazenamento dos dados, será utilizado o SentenceTransformer('all-MiniLM-L6-v2'), este modelo transforma frases (ou palavras) em um vetor de 384 elementos que capturam características semânticas da entrada, permitindo que a similaridade entre diferentes textos seja comparada através de operações como a distância ou o produto escalar entre vetores.
 
 ```py
 
@@ -88,10 +89,10 @@ model = SentenceTransformer('all-MiniLM-L6-v2')
 overview = "Exemplo de frase para vetorizar"
 encode_search_vector = model.encode(overview, normalize_embeddings=True).tolist()
 ```
-## Storing Vectors with INTERSYSTEMS IRIS
 
-The code below demonstrates how to use Embedded Python to register the records contained in the dataset:
+## Armazenado Vector com INTERSYSTEM IRIS 
 
+O código abaixo apresenta como podemos utilizar o Embedded Python para cadastrar os registros contidos no conjunto de dados (Data Set):
 
 ```python 
 Class dc.util [ Language = python ]
@@ -180,31 +181,29 @@ ClassMethod PopularFilmes()
 }
 ```
 
-### Note:
+### Observação:
 
-To store records of type `%Vector`, the SQL function `TO_VECTOR(?)` is used, as shown in the script below:
-
+Para realizar o armazenamento de registros do tipo %Vector, utiliza-se a função SQL TO_VECTOR(?), conforme mostrado no script abaixo:
 
 ```SQL
 INSERT INTO dc.filmes (overviewVector) VALUES (TO_VECTOR(?))
 ```
 
-In the Python code, it is necessary to convert the vector from a list to a string before inserting it into the database. This is done with the following line:
+No código Python, é necessário converter o vetor de uma lista para uma string antes de inseri-lo no banco de dados. Isso é feito com a seguinte linha:
 
 ```python
 str(row['overview_vector'])
 ```
 
-By executing the command ```Do ##class(dc.util).PopularFilmes()``` in an InterSystems IRIS instance, the records will be correctly stored in the database, allowing queries and advanced search operations based on the stored vectors.
+Ao executar o comando ```Do ##class(dc.util).PopularFilmes()``` em uma instância do InterSystems IRIS, os registros serão armazenados corretamente no banco de dados, permitindo consultas e operações de busca avançadas com base nos vetores armazenados.
 
-## Querying Similar Records
+## Consultando Registros Similares
 
-After storing the records, we will use the [VECTOR_DOT_PRODUCT](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_vectordotproduct) function.
+Após o armazenamento dos registros, utilizaremos a função [VECTOR_DOT_PRODUCT](https://docs.intersystems.com/irislatest/csp/docbook/DocBook.UI.Page.cls?KEY=RSQL_vectordotproduct).
 
-As described in the documentation, the VECTOR_DOT_PRODUCT function finds the dot product of two input vectors. These vectors must be of numeric, integer, double, or decimal types. The result is the dot product value, represented as a double, which can be useful when trying to determine the similarity between two vectors.
+Como descristo na documentação, a função VECTOR_DOT_PRODUCT encontra o produto escalar de dois vetores de entrada. Esses vetores devem ser do tipo numérico, inteiro, duplo ou decimal. O resultado é o valor do produto escalar, representado como um duplo, e pode ser útil ao tentar determinar a semelhança entre dois vetores.
 
-The following SQL query retrieves the 5 most similar movies from a provided vector, using the dot product to measure similarity:
-
+ O SQL a seguir busca os 5 filmes mais semelhantes a partir de um vetor fornecido, utilizando o produto escalar para medir a similaridade:
 
 ```SQL
     SELECT TOP 5 ID
@@ -218,10 +217,9 @@ The following SQL query retrieves the 5 most similar movies from a provided vect
 - WHERE ID <> ?: Exclui o ID fornecido da busca.
 - ORDER BY VECTOR_DOT_PRODUCT: Ordena os resultados pela similaridade entre o vetor overviewVector e o vetor gerado por TO_VECTOR(?), em ordem decrescente.
 
-This approach allows the system to recommend movies that are semantically close to the query provided, offering more relevant suggestions to users.
+Essa abordagem permite que o sistema recomende filmes que são semanticamente próximos ao que foi fornecido como consulta, oferecendo sugestões mais relevantes para os usuários.
 
-Example of the query Python script:
-
+Exemplo da consulta script python:
 
 ```py
 import iris
@@ -251,10 +249,9 @@ for idx, row in enumerate(rs):
     print(recomendacao.title)
 ```
 
-## Coding with Flask and Embedded Python
+## Codificando com flask e embedded python
 
-Finally, making the feature available to the end user quickly and efficiently is facilitated by the use of Embedded Python in InterSystems IRIS. By using Flask, we can create a service in a single Python file:
-
+Por fim, a disponibilização do recurso para o usuário final de maneira rápida e prática é facilitada pelo uso do Embedded Python do InterSystems IRIS. Utilizando o Flask, podemos criar um serviço em um único arquivo Python:
 
 ````python
 from flask import Flask, jsonify, request
@@ -319,15 +316,13 @@ if __name__ == '__main__':
 ````
 
 
-# Final Result:
+# Resultado Final:
 
-Finally, after making the feature available, prepare some popcorn and use the route:
-
+Por fim, após disponibilizar o recurso, prepare uma pipoca e utilize a rota:
 
 ``` http://localhost:52773/flaskapp/recomendar/<ID FILME> ``` 
 
-When performing the query, you will receive a response in JSON similar to this:
-
+Ao realizar a consulta, você receberá uma resposta em JSON semelhante a esta:
 
 ```JSON
 {
@@ -402,7 +397,7 @@ When performing the query, you will receive a response in JSON similar to this:
 }
 ```
 
-This route will allow you to receive personalized recommendations based on the movie description you provided, making your movie selection experience easier and more enjoyable.
+Essa rota permitirá que você receba recomendações personalizadas baseadas na descrição do filme que você forneceu, tornando sua experiência de escolha de filme mais fácil e divertida
 
-Enjoy!
+Aproveite!
 
